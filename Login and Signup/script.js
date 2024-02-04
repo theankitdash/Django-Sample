@@ -24,7 +24,7 @@ function toggleForm() {
     }
 }
 
-function submitForm(event) {
+async function submitForm(event) {
     event.preventDefault();
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
@@ -37,27 +37,33 @@ function submitForm(event) {
 
     const action = isLoginForm ? 'login' : 'register';
 
-    authenticateUser(username, password, action);
+    try {
+        const response = await authenticateUser(username, password, action);
+        if (response.success) {
+            alert(`${action.charAt(0).toUpperCase() + action.slice(1)} successful!`);
+        } else {
+            alert(`${action.charAt(0).toUpperCase() + action.slice(1)} failed. Please check your credentials.`);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+    }
 }
 
-function authenticateUser(username, password, action) {
-    fetch(`/${action}`, {
+async function authenticateUser(username, password, action) {
+    // Simulate server-side authentication API call
+    const apiUrl = `https://example.com/auth/${action}`;
+    const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, password }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert(`${action.charAt(0).toUpperCase() + action.slice(1)} successful!`);
-        } else {
-            alert(`${action.charAt(0).toUpperCase() + action.slice(1)} failed. Please check your credentials.`);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred. Please try again.');
     });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return response.json();
 }
