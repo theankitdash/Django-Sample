@@ -51,6 +51,12 @@ async function submitForm(event) {
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
 
+    // Password strength validation
+    if (!isStrongPassword(password)) {
+        alert('Password must contain at least one uppercase letter, one lowercase letter, one digit, one special character, and be at least 8 characters long.');
+        return;
+    }
+
     if (!isLoginForm && password !== confirmPassword) {
         alert('Passwords do not match. Please check and try again.');
         return;
@@ -72,4 +78,10 @@ async function submitForm(event) {
         console.error('Error:', error);
         alert('An error occurred. Please try again.');
     }
+}
+
+function isStrongPassword(password) {
+    // Regular expression to enforce strong password criteria
+    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return strongPasswordRegex.test(password);
 }
