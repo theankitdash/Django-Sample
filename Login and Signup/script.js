@@ -24,6 +24,27 @@ function toggleForm() {
     }
 }
 
+async function authenticateUser(username, password, action) {
+    // Update API endpoint URL
+    const apiUrl = 'http://localhost:3000/auth/' + action;
+
+    // Make request to server
+    const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+    });
+
+    // Handle response
+    if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return response.json();
+}
+
 async function submitForm(event) {
     event.preventDefault();
     const username = document.getElementById('username').value;
@@ -38,7 +59,10 @@ async function submitForm(event) {
     const action = isLoginForm ? 'login' : 'register';
 
     try {
+        // Call server-side authentication function
         const response = await authenticateUser(username, password, action);
+
+        // Handle server response
         if (response.success) {
             alert(`${action.charAt(0).toUpperCase() + action.slice(1)} successful!`);
         } else {
@@ -48,22 +72,4 @@ async function submitForm(event) {
         console.error('Error:', error);
         alert('An error occurred. Please try again.');
     }
-}
-
-async function authenticateUser(username, password, action) {
-    // Simulate server-side authentication API call
-    const apiUrl = `https://example.com/auth/${action}`;
-    const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-    });
-
-    if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    return response.json();
 }
