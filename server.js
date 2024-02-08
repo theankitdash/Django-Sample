@@ -25,8 +25,7 @@ db.connect((err) => {
         // Create a 'users' table if it doesn't exist
         db.query(`
             CREATE TABLE IF NOT EXISTS users (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                username VARCHAR(255) UNIQUE,
+                phone BIGINT UNIQUE PRIMARY KEY,
                 password VARCHAR(255)
             )
         `, (err) => {
@@ -40,12 +39,12 @@ db.connect((err) => {
 // Dummy authentication endpoint for demonstration
 app.post('/auth/:action', async (req, res) => {
     const { action } = req.params;
-    const { username, password } = req.body;
+    const {phone, password } = req.body;
 
     if (action === 'login') {
-        // Retrieve hashed password from the database based on the username
-        const query = 'SELECT * FROM users WHERE username = ?';
-        db.query(query, [username], async (err, results) => {
+        // Retrieve hashed password from the database based on the phone number
+        const query = 'SELECT * FROM users WHERE phone = ?';
+        db.query(query, [phone], async (err, results) => {
             if (err) {
                 console.error('Error retrieving user:', err.message);
                 return res.status(500).json({ success: false, message: 'Internal Server Error' });
@@ -71,11 +70,11 @@ app.post('/auth/:action', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Insert user into the 'users' table
-        const insertQuery = 'INSERT INTO users (username, password) VALUES (?, ?)';
-        db.query(insertQuery, [username, hashedPassword], (err) => {
+        const insertQuery = 'INSERT INTO users (phone, password) VALUES (?, ?)';
+        db.query(insertQuery, [phone, hashedPassword], (err) => {
             if (err) {
                 console.error('Error inserting user:', err.message);
-                return res.status(400).json({ success: false, message: 'Username already exists' });
+                return res.status(400).json({ success: false, message: 'Phone number already exists' });
             }
 
             res.json({ success: true });

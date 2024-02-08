@@ -12,17 +12,17 @@
             <div class="form-container">
                 <h2 id="formTitle">Login</h2>
                 <form id="authForm" onsubmit="submitForm(event)">
-                    
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
 
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" id="phone" name="phone" required>   
 
-                <label id="confirmPasswordLabel" for="confirmPassword" style="display:none;">Confirm Password:</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" style="display:none;">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
 
-                <button type="submit" id="submitButton">Login</button>
+                    <label id="confirmPasswordLabel" for="confirmPassword" style="display:none;">Confirm Password:</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" style="display:none;">
+
+                    <button type="submit" id="submitButton">Login</button>
                 </form>
                 <p id="toggleFormText">Don't have an account? <a href="#" onclick="toggleForm()">Register here</a></p>
             </div>

@@ -15,6 +15,7 @@ function toggleForm() {
         toggleFormText.innerHTML = 'Don\'t have an account? <a href="#" onclick="toggleForm()">Register here</a>';
         confirmPasswordLabel.style.display = 'none';
         confirmPassword.style.display = 'none';
+       
     } else {
         formTitle.innerText = 'Register';
         submitButton.innerText = 'Register';
@@ -24,7 +25,7 @@ function toggleForm() {
     }
 }
 
-async function authenticateUser(username, password, action) {
+async function authenticateUser(phone, password, action) {
     // Update API endpoint URL
     const apiUrl = 'http://localhost:3000/auth/' + action;
 
@@ -34,7 +35,7 @@ async function authenticateUser(username, password, action) {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({phone, password}),
     });
 
     // Handle response
@@ -47,9 +48,14 @@ async function authenticateUser(username, password, action) {
 
 async function submitForm(event) {
     event.preventDefault();
-    const username = document.getElementById('username').value;
+    const phone = document.getElementById('phone').value;
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
+
+    if (!isLoginForm && !isPhoneValid(phone)) {
+        alert('Please enter a valid phone number.');
+        return;
+    }
 
     // Password strength validation
     if (!isStrongPassword(password)) {
@@ -66,7 +72,7 @@ async function submitForm(event) {
 
     try {
         // Call server-side authentication function
-        const response = await authenticateUser(username, password, action);
+        const response = await authenticateUser(phone, password, action);
 
         // Handle server response
         if (response.success) {
@@ -84,4 +90,9 @@ function isStrongPassword(password) {
     // Regular expression to enforce strong password criteria
     const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     return strongPasswordRegex.test(password);
+}
+
+function isPhoneValid(phone) {
+    const phoneRegex = /^[0-9]{10}$/;
+    return phoneRegex.test(phone);
 }
