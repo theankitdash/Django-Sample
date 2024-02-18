@@ -22,9 +22,9 @@ db.connect((err) => {
         console.error('Error connecting to MySQL:', err.message);
     } else {
         console.log('Connected to MySQL database');
-        // Create a 'users' table if it doesn't exist
+        // Create a 'credentials' table if it doesn't exist
         db.query(`
-            CREATE TABLE IF NOT EXISTS users (
+            CREATE TABLE IF NOT EXISTS credentials (
                 phone BIGINT UNIQUE PRIMARY KEY,
                 password VARCHAR(255)
             )
@@ -43,7 +43,7 @@ app.post('/auth/:action', async (req, res) => {
 
     if (action === 'login') {
         // Retrieve hashed password from the database based on the phone number
-        const query = 'SELECT * FROM users WHERE phone = ?';
+        const query = 'SELECT * FROM credentials WHERE phone = ?';
         db.query(query, [phone], async (err, results) => {
             if (err) {
                 console.error('Error retrieving user:', err.message);
@@ -69,8 +69,8 @@ app.post('/auth/:action', async (req, res) => {
         // Hash the password before storing it in the database
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Insert user into the 'users' table
-        const insertQuery = 'INSERT INTO users (phone, password) VALUES (?, ?)';
+        // Insert user into the 'credentials' table
+        const insertQuery = 'INSERT INTO credentials (phone, password) VALUES (?, ?)';
         db.query(insertQuery, [phone, hashedPassword], (err) => {
             if (err) {
                 console.error('Error inserting user:', err.message);
