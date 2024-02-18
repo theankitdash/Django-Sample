@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finance Tracker</title>
+  {% load static %} 
+  <link rel="stylesheet" href ="{% static 'css/home.css' %}" >
+</head>
+<body>
+  <header>
+    <div class="user-info">
+      <h1>Welcome, [User Name]</h1>
+      <nav class="top-menu">
+        <ul>
+          <li><a href="#">Budgets and Expenses</a></li>
+          <li><a href="#">Reports and Analysis</a></li>
+          <li><a href="#">Account Settings</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <section class="overview">
+      <h2>Expense Overview</h2>
+      <div class="score">
+        <h3>Your Expense Score</h3>
+        <div class="pie-chart"></div> <!-- Placeholder for pie chart -->
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <p>&copy; 2024 Finance Tracker. All rights reserved.</p>
+  </footer>
+</body>
+</html>
