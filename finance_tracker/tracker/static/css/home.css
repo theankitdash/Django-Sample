@@ -1,76 +1,51 @@
 body, h1, h2, h3, p {
     margin: 0;
     padding: 0;
-}
-
-body {
+  }
+  
+  body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
-}
-
-.container {
-    max-width: 800px;
+  }
+  
+  .container {
+    max-width: 500px;
     margin: 0 auto;
     padding: 30px;
     box-sizing: border-box;
-}
-
-header {
+  }
+  
+  header {
     background-color: #007bff;
     color: #fff;
     padding: 20px;
     border-radius: 10px 10px 0 0;
-}
-
-.user-info {
+  }
+  
+  .user-info {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.top-menu ul {
+  }
+  
+  .top-menu ul {
     list-style-type: none;
     text-align: right;
-}
-
-.top-menu ul li {
+  }
+  
+  .top-menu ul li {
     display: inline-block;
     margin-left: 20px;
-}
-
-.top-menu ul li a {
+  }
+  
+  .top-menu ul li a {
     color: #fff;
     text-decoration: none;
-}
-
-.section {
-    margin-bottom: 30px;
-}
-
-.section h2 {
-    font-size: 20px;
-    color: #555;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-}
-
-.overview {
-    margin-bottom: 30px;
-    padding-bottom: 20px;
-}
-
-.pie-chart {
-    width: 400px;
-    height: 400px;
-    margin: 0 auto;
-    background-color: #ccc; /* Placeholder color for the chart */
-    border-radius: 50%;
-}
-
-footer {
+  }
+  
+  footer {
     background-color: #007bff;
     color: #fff;
     text-align: center;
@@ -79,4 +54,5 @@ footer {
     position: fixed;
     bottom: 0;
     width: 100%;
-}
+  }
+  

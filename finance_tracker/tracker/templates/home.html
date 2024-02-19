@@ -6,33 +6,30 @@
   <title>Finance Tracker</title>
   {% load static %} 
   <link rel="stylesheet" href ="{% static 'css/home.css' %}" >
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <header>
     <div class="user-info">
-      <h1>Welcome, [User Name]</h1>
+      <h1>Welcome, {{ user.username }}</h1>
       <nav class="top-menu">
         <ul>
-          <li><a href="#">Budgets and Expenses</a></li>
-          <li><a href="#">Reports and Analysis</a></li>
-          <li><a href="#">Account Settings</a></li>
+          <li><a href="{% url 'budget-expenses' %}">Budgets and Expenses</a></li>
+          <li><a href="{% url 'report-analysis' %}">Reports and Analysis</a></li>
+          <li><a href="{% url 'account-settings' %}">Account Settings</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
   <div class="container">
-    <section class="overview">
-      <h2>Expense Overview</h2>
-      <div class="score">
-        <h3>Your Expense Score</h3>
-        <div class="pie-chart"></div> <!-- Placeholder for pie chart -->
-      </div>
-    </section>
+    <canvas id="expenseChart"></canvas>
   </div>
 
   <footer>
     <p>&copy; 2024 Finance Tracker. All rights reserved.</p>
   </footer>
+  {% load static %}  
+  <script src="{% static 'js/home.js' %}"></script>
 </body>
 </html>
