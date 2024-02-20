@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
+const fs = require('fs');
 
 const app = express();
 const port = 3000;
@@ -14,7 +15,7 @@ const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'Chiku@4009',
-    database: 'tutoring-system',
+    database: 'finance-tracker',
 });
 
 db.connect((err) => {
@@ -35,6 +36,26 @@ db.connect((err) => {
         });
     }
 });
+
+// Function to append user data to JSON file
+function appendUserDataToFile(userData) {
+    let existingData = [];
+    try {
+        if (fs.existsSync('userdata.json')) {
+            existingData = JSON.parse(fs.readFileSync('userdata.json'));
+        }
+    } catch (error) {
+        console.error('Error reading JSON file:', error.message);
+    }
+
+    existingData.push(userData);
+    fs.writeFileSync('userdata.json', JSON.stringify(existingData, null, 2));
+}
+
+// Check if JSON file exists, if not create it
+if (!fs.existsSync('userdata.json')) {
+    fs.writeFileSync('userdata.json', '[]');
+}
 
 // Dummy authentication endpoint for demonstration
 app.post('/auth/:action', async (req, res) => {
@@ -61,6 +82,7 @@ app.post('/auth/:action', async (req, res) => {
 
             if (passwordMatch) {
                 res.json({ success: true });
+
             } else {
                 res.status(401).json({ success: false, message: 'Invalid credentials' });
             }
@@ -77,6 +99,10 @@ app.post('/auth/:action', async (req, res) => {
                 return res.status(400).json({ success: false, message: 'Phone number already exists' });
             }
 
+            // Append phone number and hashed password to JSON file
+            const userData = { phone, password: hashedPassword };
+            appendUserDataToFile(userData);
+
             res.json({ success: true });
         });
     } else {
@@ -84,8 +110,16 @@ app.post('/auth/:action', async (req, res) => {
     }
 });
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'Login and Signup', 'index.html'));
+app.get('/api/login-info', (req, res) => {
+    // Read the JSON file containing login information
+    try {
+        const loginData = JSON.parse(fs.readFileSync('userdata.json'));
+        res.json(loginData);
+    } catch (error) {
+        console.error('Error reading JSON file:', error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+    //res.sendFile(path.join(__dirname, 'Login and Signup', 'index.html'));
 });
 
 app.listen(port, () => {

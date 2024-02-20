@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'finance_tracker.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tutoring-system',
+        'NAME': 'finance-tracker',
         'USER': 'root',
         'PASSWORD': 'Chiku@4009',
         'HOST': 'localhost',  # or the hostname where your MySQL server is running
