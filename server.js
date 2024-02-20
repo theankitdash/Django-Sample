@@ -57,57 +57,57 @@ if (!fs.existsSync('userdata.json')) {
     fs.writeFileSync('userdata.json', '[]');
 }
 
-// Dummy authentication endpoint for demonstration
-app.post('/auth/:action', async (req, res) => {
-    const { action } = req.params;
+// Authentication endpoint for login
+app.post('/auth/login', async (req, res) => {
     const {phone, password } = req.body;
 
-    if (action === 'login') {
-        // Retrieve hashed password from the database based on the phone number
-        const query = 'SELECT * FROM credentials WHERE phone = ?';
-        db.query(query, [phone], async (err, results) => {
-            if (err) {
-                console.error('Error retrieving user:', err.message);
-                return res.status(500).json({ success: false, message: 'Internal Server Error' });
-            }
+    // Retrieve hashed password from the database based on the phone number
+    const query = 'SELECT * FROM credentials WHERE phone = ?';
+    db.query(query, [phone], async (err, results) => {
+        if (err) {
+            console.error('Error retrieving user:', err.message);
+            return res.status(500).json({ success: false, message: 'Internal Server Error' });
+        }
 
-            if (results.length === 0) {
-                return res.status(401).json({ success: false, message: 'Invalid credentials' });
-            }
+        if (results.length === 0) {
+            return res.status(401).json({ success: false, message: 'Invalid credentials' });
+        }
 
-            const hashedPassword = results[0].password;
+        const hashedPassword = results[0].password;
 
-            // Compare hashed password with the submitted password
-            const passwordMatch = await bcrypt.compare(password, hashedPassword);
+        // Compare hashed password with the submitted password
+        const passwordMatch = await bcrypt.compare(password, hashedPassword);
 
-            if (passwordMatch) {
-                res.json({ success: true });
-
-            } else {
-                res.status(401).json({ success: false, message: 'Invalid credentials' });
-            }
-        });
-    } else if (action === 'register') {
-        // Hash the password before storing it in the database
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Insert user into the 'credentials' table
-        const insertQuery = 'INSERT INTO credentials (phone, password) VALUES (?, ?)';
-        db.query(insertQuery, [phone, hashedPassword], (err) => {
-            if (err) {
-                console.error('Error inserting user:', err.message);
-                return res.status(400).json({ success: false, message: 'Phone number already exists' });
-            }
-
-            // Append phone number and hashed password to JSON file
-            const userData = { phone, password: hashedPassword };
-            appendUserDataToFile(userData);
-
+        if (passwordMatch) {
             res.json({ success: true });
-        });
-    } else {
-        res.status(400).json({ success: false, message: 'Invalid action' });
-    }
+
+        } else {
+            res.status(401).json({ success: false, message: 'Invalid credentials' });
+        }
+    });
+});
+
+// Authentication endpoint for user registration
+app.post('/auth/register', async (req, res) => {   
+    const { phone, password } = req.body;
+
+    // Hash the password before storing it in the database
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Insert user into the 'credentials' table
+    const insertQuery = 'INSERT INTO credentials (phone, password) VALUES (?, ?)';
+    db.query(insertQuery, [phone, hashedPassword], (err) => {
+        if (err) {
+            console.error('Error inserting user:', err.message);
+            return res.status(400).json({ success: false, message: 'Phone number already exists' });
+        }
+
+        // Append phone number and hashed password to JSON file
+        const userData = { phone, password: hashedPassword };
+        appendUserDataToFile(userData);
+
+        res.json({ success: true });
+    });
 });
 
 app.get('/api/login-info', (req, res) => {

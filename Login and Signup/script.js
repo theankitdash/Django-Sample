@@ -1,3 +1,4 @@
+const serverUrl = 'http://127.0.0.1:8000/tracker/account-settings/';
 let isLoginForm = true;
 
 function toggleForm() {
@@ -27,7 +28,7 @@ function toggleForm() {
 
 async function authenticateUser(phone, password, action) {
     // Update API endpoint URL
-    const apiUrl = 'http://localhost:3000/auth/' + action;
+    const apiUrl = `/auth/${action}`;
 
     // Make request to server
     const response = await fetch(apiUrl, {
@@ -76,7 +77,7 @@ async function submitForm(event) {
 
         // Handle server response
         if (response.success) {
-            alert(`${action.charAt(0).toUpperCase() + action.slice(1)} successful!`);
+            window.location.href = serverUrl;
         } else {
             alert(`${action.charAt(0).toUpperCase() + action.slice(1)} failed. Please check your credentials.`);
         }
