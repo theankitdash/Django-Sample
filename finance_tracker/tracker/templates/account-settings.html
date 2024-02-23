@@ -1,66 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Settings - Finance Tracker</title>
     {% load static %} 
-    <link rel="stylesheet" href ="{% static 'css/account-settings.css' %}" >
-    </head>
-    <body>
-        <div class="container">
-            <h1>Account Settings</h1>
-            
+    <link rel="stylesheet" href="{% static 'css/account-settings.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Account Settings</h1>
+
+        <form action="{% url 'account-settings' %}" method="POST">
+            {% csrf_token %}
+            <div class="login-info">
+                <h2>Login Information</h2>
+                <div class="user">
+                    <h3>User</h3>
+                    <p>Phone Number: {{phone_number }}</p>
+                    <p>Password: {{ password }}</p>
+                </div>
+                <button type="button" onclick="updatePhoneNumber()">Update Phone Number</button>
+                <button type="button" onclick="updatePassword()">Update Password</button>
+            </div>
+
             <div class="section">
                 <h2>Profile Settings</h2>
                 <div class="setting">
                     <label for="fullname">Full Name:</label>
-                    <input type="text" id="fullname" placeholder="Enter your full name">
+                    <input type="text" id="fullname" name="fullname" placeholder="Enter your full name">
                 </div>
                 <div class="setting">
                     <label for="profilePicture">Profile Picture:</label>
-                    <input type="file" id="profilePicture">
-                    <button>Change Profile Picture</button>
+                    <input type="file" id="profilePicture" name="profilePicture">
+                    <button type="submit">Change Profile Picture</button>
                 </div>
                 <div class="setting">
-                    <button>Save Profile</button>
+                    <button type="submit">Save Profile</button>
                 </div>
-                
-                <div class="section">
-                    <h2>Contact Information</h2>
-                    <div class="setting">
-                        <label for="phoneNumber">Phone Number:</label>
-                        <input type="text" id="phoneNumber" placeholder="Enter your phone number" value="{{ phone_number }}">
-                    </div>
-                    <div class="setting">
-                        <label for="emailAddress">Email Address:</label>
-                        <input type="text" id="emailAddress" placeholder="Enter your email address">
-                    </div>
-                    <div class="setting">
-                        <button>Update Contact Information</button>
-                    </div>
-                    
             </div>
-            
+
+            <div class="section">
+                <h2>Contact Information</h2>
+                <div class="setting">
+                    <label for="phoneNumber">Phone Number:</label>
+                    <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" value="{{phone_number}}">
+                </div>
+                <div class="setting">
+                    <label for="emailAddress">Email Address:</label>
+                    <input type="text" id="emailAddress" name="emailAddress" placeholder="Enter your email address">
+                </div>
+                <div class="setting">
+                    <button type="submit">Update Contact Information</button>
+                </div>
+            </div>
+
             <div class="section">
                 <h2>Security Settings</h2>
                 <div class="setting">
                     <label for="password">Password:</label>
-                    <input type="password" id="password" placeholder="Enter your password" value="{{ password }}">
+                    <input type="password" id="password" name="password" placeholder="Enter your password" value="{{password}}">
                 </div>
                 <div class="setting">
-                    <button>Change Password</button>
+                    <button type="submit">Change Password</button>
                 </div>
                 <div class="setting">
                     <label for="twoFactor">Two-Factor Authentication:</label>
-                    <input type="checkbox" id="twoFactor">
-                    <button>Enable Two-Factor Authentication</button>
+                    <input type="checkbox" id="twoFactor" name="twoFactor">
+                    <button type="submit">Enable Two-Factor Authentication</button>
                 </div>
             </div>
-            
+
             <div class="logout">
-                <button>Logout</button>
+                <button type="submit">Logout</button>
             </div>
-        </div>
-    </body>
+        </form>
+    </div>
+
+    <script>
+        function updatePhoneNumber() {
+            // Add logic to update phone number
+        }
+
+        function updatePassword() {
+            // Add logic to update password
+        }
+    </script>
+</body>
 </html>
