@@ -3,6 +3,9 @@ from django.http import HttpResponse
 import requests
 import json
 
+def login(request):
+    return render(request, 'login.html')
+
 def account_settings(request):
     return render(request, 'account-settings.html')
 
